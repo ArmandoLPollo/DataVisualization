@@ -7,10 +7,15 @@ import matplotlib.pyplot as plt
 
 #insatgram scraping, datas and charts
 
-instance = instaloader.Instaloader()
-profile = instaloader.Profile.from_username(instance.context, 'armand.dr')
+account = "" #Your instagram account name
+password = "" #Your password
 
-instance.login(user="armand.dr",passwd="32b27,4aC9")
+instance = instaloader.Instaloader()
+profile = instaloader.Profile.from_username(instance.context, account)
+
+instance.login(user="armand.dr",passwd=password)
+
+#Getting data and put them in a csv file
 
 #followees = [followee.username for followee in profile.get_followees()]
 
@@ -60,6 +65,8 @@ similarities = alt.Chart(df).mark_point(filled=True).encode(
             ]
 ).interactive()
 
+#For the 3rd and 4th chart, we directly get data from instagram because it don't take a lot of time to get.
+
 #3rd chart
 my_posts = instaloader.Profile.from_username(instance.context, 'armand.dr').get_posts()
 df_my_posts  = pd.DataFrame(columns= ['date', 'nbLikes'])
@@ -108,19 +115,15 @@ comparing_chart = alt.Chart(df_compare_likes).mark_bar().encode(
 #5th chart
 followees = df_followee_sample_likes.columns
 data = df_followee_sample_likes.iloc[0]
-  
-#Creating explode data
+
 explode = (0.5, 0.1, 0.1, 0.1, 0.3, 0.2, 0.1, 0.1, 0.7, 0.2)
-  
-# Wedge properties
+
 wp = { 'linewidth' : 0.5, 'edgecolor' : "white" }
   
-# Creating autocpt arguments
 def func(pct, allvalues):
     absolute = int(pct / 100.*np.sum(allvalues))
     return "{:.1f}%\n({:d} likes)".format(pct, absolute)
   
-# Creating plot
 fig, ax = plt.subplots(figsize =(6.5, 4))
 wedges, texts, autotexts = ax.pie(data, autopct = lambda pct: func(pct, data),
                                   explode = explode,
@@ -129,12 +132,12 @@ wedges, texts, autotexts = ax.pie(data, autopct = lambda pct: func(pct, data),
                                   wedgeprops = wp,
                                   textprops = dict(color ="black"))
 
-# Adding legend
 ax.legend(wedges, followees, title ="Followees", loc ="center left", bbox_to_anchor =(1, 0, 0.5, 1))
   
 plt.setp(autotexts, size = 6, weight ="bold")
 
 # Streamlit part
+
 st.set_page_config(layout="wide")
 
 st.title('Welcome to my instagram\'s data visualization')
