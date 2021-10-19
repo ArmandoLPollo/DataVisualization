@@ -5,15 +5,15 @@ import altair as alt
 import numpy as np
 import matplotlib.pyplot as plt
 
-#insatgram scraping, datas and charts
+#Insatgram scraping, datas and charts
 
 account = "" #Your instagram account name
 password = "" #Your password
 
 instance = instaloader.Instaloader()
-profile = instaloader.Profile.from_username(instance.context, account)
+instance.login(user=account,passwd=password)
 
-instance.login(user="armand.dr",passwd=password)
+profile = instaloader.Profile.from_username(instance.context, account)
 
 #Getting data and put them in a csv file
 
